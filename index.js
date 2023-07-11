@@ -8,19 +8,23 @@ const main = async () => {
             username: process.env.UNAME,
             password: process.env.PASSW
         });
-        const response = await axios.get('https://animechan.xyz/api/random');
-        const quotes = response.data;
-        const p = await threadsAPI.publish({
-          text: `Quote: ${quotes.quote}\nCharacter: ${quotes.character}\nnime: ${quotes.anime}`,
+        fetch('https://kyoko.rei.my.id/api/quotes.php')
+       .then(response => response.json())
+  .then((data) => {
+        const p = threadsAPI.publish({
+          text: `Quote: ${data.apiResult[0].english}\nCharacter: ${data.apiResult[0].character}\nAnime: ${data.apiResult[0].anime}`,
         });
-
-        console.log(p);
+    })
+console.log(`${data.apiResult[0].english}`)
+        console.log('succses');
 
     } catch (error) {
         console.log("failed");
     }
 }
+
   
 setInterval( async () => {
         await main()
     }, process.env.DELAY * 1000);
+
